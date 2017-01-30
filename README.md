@@ -1,3 +1,8 @@
+# Note from PMOUREU
+You can use the 3 DLLs in the DLL folder to update your installation, 
+you may backup or rename the old files before doing this, i don't want that you press any charges...
+
+
 # RevitPythonShell
 
 The RevitPythonShell adds an IronPython interpreter to Autodesk Revit and Vasari. 
