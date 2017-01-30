@@ -1,5 +1,6 @@
-# Note from PMOUREU
-You can use the 3 DLLs in the DLL folder to update your installation, 
+# Note from PMOUREU (to update on Revit 2015)
+You can use the 3 DLLs in the DLL folder to update your RPS installation, 
+[download the ZIP](https://github.com/PMoureu/revitpythonshell/raw/master/DLL/2015/DLL2015.zip) and replace the files in the right directory (C:\Program Files (x86)\RevitPythonShell2015 )
 you may backup or rename the old files before doing this, i don't want that you press any charges...
 
 
