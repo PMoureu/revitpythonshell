@@ -75,6 +75,11 @@ namespace RevitPythonShell.RpsRuntime
                 scope.SetVariable("__window__", scriptOutput);
                 scope.SetVariable("__file__", sourcePath);
 
+                //Add script directory address to sys search paths
+                var path = engine.GetSearchPaths();
+                path.Add(System.IO.Path.GetDirectoryName(sourcePath));
+                engine.SetSearchPaths(path);
+
                 engine.Runtime.IO.SetOutput(outputStream, Encoding.UTF8);
                 engine.Runtime.IO.SetErrorOutput(outputStream, Encoding.UTF8);
                 engine.Runtime.IO.SetInput(outputStream, Encoding.UTF8);
@@ -119,7 +124,7 @@ namespace RevitPythonShell.RpsRuntime
 
         private ScriptEngine CreateEngine()
         {
-            var engine = IronPython.Hosting.Python.CreateEngine(new Dictionary<string, object>() { { "Frames", true }, { "FullFrames", true } });                        
+            var engine = IronPython.Hosting.Python.CreateEngine(new Dictionary<string, object>() { { "Frames", true }, { "FullFrames", true } });
             return engine;
         }
 
@@ -133,7 +138,7 @@ namespace RevitPythonShell.RpsRuntime
             var resName = resQuery.Single();
             var importer = new IronPython.Modules.ResourceMetaPathImporter(asm, resName);
             dynamic sys = IronPython.Hosting.Python.GetSysModule(engine);
-            sys.meta_path.append(importer);            
+            sys.meta_path.append(importer);
         }
 
         /// <summary>
@@ -166,7 +171,7 @@ namespace RevitPythonShell.RpsRuntime
             {
                 builtin.SetVariable("__uiControlledApplication__", _uiControlledApplication);
             }
-            
+
             // add the search paths
             AddSearchPaths(engine);
             AddEmbeddedLib(engine);
@@ -177,7 +182,7 @@ namespace RevitPythonShell.RpsRuntime
 
             // also, allow access to the RPS internals
             engine.Runtime.LoadAssembly(typeof(RevitPythonShell.RpsRuntime.ScriptExecutor).Assembly);
-        }        
+        }
 
         /// <summary>
         /// Be nasty and reach into the ScriptScope to get at its private '_scope' member,

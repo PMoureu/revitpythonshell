@@ -79,9 +79,10 @@
                 <avalonEdit:TextEditor
 			    Name="textEditor"
 			    FontFamily="Consolas"
-			    FontSize="10pt"
-                    ># IronPython Pad. Write code snippets here and F5 to run.
-                </avalonEdit:TextEditor>
+			    FontSize="9pt"
+                    xml:space="preserve"
+                    ># IronPython Pad. Write code here, Press Play or F5 to run.
+# Select some lines for partial execution&#10;</avalonEdit:TextEditor>
             </Grid>
         </DockPanel>
         

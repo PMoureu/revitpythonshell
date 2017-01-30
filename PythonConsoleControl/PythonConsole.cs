@@ -24,6 +24,7 @@ using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Utils;
 using Style = Microsoft.Scripting.Hosting.Shell.Style;
+using System.Runtime.Remoting;
 
 namespace PythonConsoleControl
 {
@@ -74,7 +75,7 @@ namespace PythonConsoleControl
         volatile bool executing = false;
 
         // This is the thread upon which all commands execute unless the dipatcher is overridden.
-        Thread dispatcherThread;        
+        Thread dispatcherThread;
         public Dispatcher dispatcher;
 
         string scriptText = String.Empty;
@@ -134,12 +135,12 @@ namespace PythonConsoleControl
                 this.textEditor.textArea.CommandBindings.Add(new CommandBinding(ApplicationCommands.Undo, OnUndo, CanUndo));
                 this.textEditor.textArea.CommandBindings.Add(new CommandBinding(ApplicationCommands.Delete, PythonEditingCommandHandler.OnDelete(ApplicationCommands.NotACommand), CanDeleteCommand));
 
-            }));            
+            }));
             // Set dispatcher to run on a UI thread independent of both the Control UI thread and thread running the REPL.
             WhenConsoleInitialized(delegate
             {
                 SetCommandDispatcher(DispatchCommand);
-            });                       
+            });
         }
 
         public Action<Action> GetCommandDispatcher()
@@ -381,6 +382,7 @@ namespace PythonConsoleControl
                 try
                 {
                     executing = true;
+                    
                     var errors = new ErrorReporter();
                     var command = scriptSource.Compile(errors);
                     if (command == null)
@@ -390,8 +392,14 @@ namespace PythonConsoleControl
                     }
                     else
                     {
-                        GetCommandDispatcher()(() => scriptSource.Execute(commandLine.ScriptScope));
-                    }                    
+                        //GetCommandDispatcher()(() => scriptSource.Execute(commandLine.ScriptScope));
+                        ObjectHandle wrapexception = null;
+                        GetCommandDispatcher()(() => scriptSource.ExecuteAndWrap(commandLine.ScriptScope, out wrapexception));
+                        if (wrapexception != null)
+                        {
+                            error = "Exception : " + wrapexception.Unwrap().ToString() + "\n";
+                        }
+                    }
                 }
                 catch (ThreadAbortException tae)
                 {

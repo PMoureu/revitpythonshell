@@ -12,7 +12,7 @@ namespace RevitPythonShell
 {
     public partial class ConfigureCommandsForm : Form
     {
-        private List<Command> _commands;        
+        private List<Command> _commands;
         private List<string> _searchPaths;
         private List<KeyValuePair<string, string>> _variables;
 
@@ -37,7 +37,7 @@ namespace RevitPythonShell
         {
             _commands = RevitPythonShellApplication.GetCommands(
                 RevitPythonShellApplication.GetSettings()).ToList();
-            lstCommands.DataSource = _commands;      
+            lstCommands.DataSource = _commands;
 
             _searchPaths = RevitPythonShellApplication.GetConfig().GetSearchPaths().ToList();
             lstSearchPaths.DataSource = _searchPaths;
@@ -188,7 +188,7 @@ namespace RevitPythonShell
             int newPosition = Math.Max(0, oldPosition - 1);
 
             SwapPositions(_commands, oldPosition, newPosition);
-            
+
             RefreshBindingContext(lstCommands, _commands);
 
             lstCommands.SelectedIndex = newPosition;
@@ -213,7 +213,7 @@ namespace RevitPythonShell
             lstCommands.SelectedIndex = newPosition;
         }
 
- 
+
         /// <summary>
         /// Save changes to RevitPythonShell.xml and close Dialog.
         /// </summary>
@@ -354,8 +354,11 @@ namespace RevitPythonShell
             dialog.Multiselect = false;
             dialog.FileName = txtCommandPath.Text;
 
-            dialog.ShowDialog(this);
-            txtInitScript.Text = dialog.FileName;
+            if (dialog.ShowDialog(this) == DialogResult.OK)
+            {
+                txtInitScript.Text = dialog.FileName;
+            }
+
         }
 
         private void btnStartupScriptBrowse_Click(object sender, EventArgs e)
@@ -366,8 +369,11 @@ namespace RevitPythonShell
             dialog.Multiselect = false;
             dialog.FileName = txtCommandPath.Text;
 
-            dialog.ShowDialog(this);
-            txtStartupScript.Text = dialog.FileName;
-        } 
+            if (dialog.ShowDialog(this) == DialogResult.OK)
+            {
+                txtStartupScript.Text = dialog.FileName;
+            }
+
+        }
     }
 }
