@@ -1,4 +1,8 @@
-# Note from PMOUREU (to update on Revit 2015)
+# Note from PMOUREU (backport Revit 2015)
+## Setup for Revit 2015
+Download and execute this [installer](https://github.com/PMoureu/revitpythonshell/blob/master/Output/2017.03.03_Setup_RevitPythonShell_2015.exe)
+
+## Update for Revit 2015
 You can use the 3 DLLs in the DLL folder to update your RPS installation, 
 [download the ZIP](https://github.com/PMoureu/revitpythonshell/raw/master/DLL/2015/DLL2015.zip) and replace the files in the right directory (C:\Program Files (x86)\RevitPythonShell2015 )
 you may backup or rename the old files before doing this, i don't want that you press any charges...
